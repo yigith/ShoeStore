@@ -1,3 +1,4 @@
+using ApplicationCore.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Data;
+using Web.Interfaces;
+using Web.Services;
 
 namespace Web
 {
@@ -37,6 +40,10 @@ namespace Web
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IHomeViewModelService, HomeViewModelService>();
+
             services.AddControllersWithViews();
         }
 
