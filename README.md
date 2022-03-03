@@ -34,3 +34,4 @@ Install-Package Ardalis.Specification.EntityFrameworkCore -v 5.2.0
 * https://github.com/dotnet-architecture/eShopOnWeb
 * https://www.connectionstrings.com/postgresql/
 * https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-5.0#localization-middleware
+* https://getbootstrap.com/docs/5.1/forms/layout/#inline-forms

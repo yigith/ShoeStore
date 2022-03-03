@@ -5,6 +5,36 @@
 
 <h1>Products</h1>
 
+<div class="card mb-3 bg-light">
+    <div class="card-body">
+        <form class="row row-cols-sm-auto g-3 align-items-center">
+            <div class="col-12">
+                <label>Category</label>
+            </div>
+
+            <div class="col-12">
+                <select class="form-select" asp-items="Model.Categories" asp-for="CategoryId">
+                    <option value="">All</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label>Brand</label>
+            </div>
+
+            <div class="col-12">
+                <select class="form-select" asp-items="Model.Brands" asp-for="BrandId">
+                    <option value="">All</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="row">
     @foreach (var item in Model.Products)
     {
