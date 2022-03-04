@@ -26,6 +26,9 @@ namespace Web.Services
 
         public async Task<HomeViewModel> GetHomeViewModelAsync(int? categoryId, int? brandId, int page)
         {
+            var specAllProducts = new ProductsFilterSpecification(categoryId, brandId);
+            int totalItems = await _productRepo.CountAsync(specAllProducts);
+            int totalPages = (int)Math.Ceiling((double)totalItems / Constants.ITEMS_PER_PAGE);
             var specProducts = new ProductsFilterSpecification(categoryId, brandId, (page - 1) * Constants.ITEMS_PER_PAGE, Constants.ITEMS_PER_PAGE);
             List<Product> products = await _productRepo.GetAllAsync(specProducts);
             HomeViewModel vm = new HomeViewModel()
@@ -42,7 +45,16 @@ namespace Web.Services
                 Brands = (await _brandRepo.GetAllAsync()).Select(x =>
                     new SelectListItem(x.Name, x.Id.ToString())).ToList(),
                 CategoryId = categoryId,
-                BrandId = brandId
+                BrandId = brandId,
+                PaginationInfo = new PaginationInfoViewModel()
+                {
+                    CurrentPage = page,
+                    ItemsOnPage = products.Count,
+                    TotalItems = totalItems,
+                    TotalPages = totalPages,
+                    HasPrevious = page > 1,
+                    HasNext = page < totalPages
+                }
             };
             return vm;
         }
