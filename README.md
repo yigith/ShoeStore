@@ -16,6 +16,8 @@
 /Infrastructure
 Add-Migration InitialCreate -Context StoreContext -OutputDir "Data\Migrations"
 Update-Database -Context StoreContext
+Add-Migration InitialIdentity -Context AppIdentityDbContext -OutputDir "Identity\Migrations"
+Update-Database -Context AppIdentityDbContext
 ```
 
 ### Packages
@@ -27,6 +29,7 @@ Install-Package Ardalis.Specification -v 5.2.0
 Install-Package Microsoft.EntityFrameworkCore -v 5.0.14
 Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 5.0.10
 Install-Package Ardalis.Specification.EntityFrameworkCore -v 5.2.0
+Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 5.0.14
 ```
 
 ### Resources
