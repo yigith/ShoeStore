@@ -44,8 +44,10 @@
 
                 <div class="card-body">
                     <h6 class="card-title product-title">@item.Name</h6>
-                    <p class="card-text">@item.Price.ToString("c2")</p>
-                    <a href="#" class="btn btn-primary">Add To Basket</a>
+                    <div class="d-flex align-items-center">
+                        <div class="fw-bold">@item.Price.ToString("c2")</div>
+                        <a href="#" class="btn btn-outline-primary ms-auto"><i class="fas fa-cart-plus"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
