@@ -13,5 +13,7 @@
         public int Quantity { get; set; }
 
         public string PictureUri { get; set; }
+
+        public decimal TotalPrice => UnitPrice * Quantity;
     }
 }

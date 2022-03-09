@@ -81,3 +81,13 @@ body {
     height: 2.5rem;
     overflow: hidden;
 }
+
+/* My Basket
+-------------------------------------------------- */
+.number-input > .quantity {
+    width: 70px;
+}
+
+.empty-basket-icon {
+    font-size: 48px;
+}
