@@ -46,14 +46,16 @@
                     <h6 class="card-title product-title">@item.Name</h6>
                     <div class="d-flex align-items-center">
                         <div class="fw-bold">@item.Price.ToString("c2")</div>
-                        <a href="#" class="btn btn-outline-primary ms-auto"><i class="fas fa-cart-plus"></i></a>
+                        <a data-add-item="@item.Id" href="#" class="btn btn-outline-primary ms-auto">
+                            <i class="fas fa-cart-plus"></i>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     }
 </div>
-@{ 
+@{
     var pi = Model.PaginationInfo;
 }
 
@@ -88,3 +90,21 @@
         </li>
     </ul>
 </nav>
+
+@section Scripts {
+<script>
+    $("[data-add-item]").click(function(event) {
+        event.preventDefault();
+        var id = $(this).data("add-item");
+        $.ajax({
+            url: "@Url.Action("AddToBasket", "Basket")",
+            type: "post",
+            data: { productId: id, quantity: 1 },
+            success: function(data) {
+                $("#navBasketItemsCount").text(data.totalItemsCount);
+                toastr.success("The item has been added to the basket.");   
+            }
+        })
+    });
+</script>
+}

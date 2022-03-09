@@ -3,6 +3,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Interfaces;
@@ -14,20 +15,53 @@ namespace Web.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepository<Basket> _basketRepo;
+        private readonly IBasketService _basketService;
 
-        public BasketViewModelService(IHttpContextAccessor httpContextAccessor, IRepository<Basket> basketRepo)
+        public BasketViewModelService(IHttpContextAccessor httpContextAccessor, IRepository<Basket> basketRepo, IBasketService basketService)
         {
             _httpContextAccessor = httpContextAccessor;
             _basketRepo = basketRepo;
+            _basketService = basketService;
+        }
+
+        public async Task<BasketViewModel> GetBasketViewModelAsync()
+        {
+            var basketId = (await GetOrCreateBasketAsync()).Id;
+            var specBasket = new BasketWithItemsSpecification(basketId);
+            var basket = await _basketRepo.FirstOrDefaultAsync(specBasket);
+            return BasketToViewModel(basket);
+        }
+
+        public async Task<int> GetBasketItemsCountAsync()
+        {
+            var basket = await GetBasketViewModelAsync();
+            return basket.TotalItemsCount;
         }
 
         public async Task<BasketViewModel> AddToBasketAsync(int productId, int quantity)
         {
             var basket = await GetOrCreateBasketAsync();
+            basket = await _basketService.AddItemToBasketAsync(basket.Id, productId, quantity);
 
-            // todo: application core'da BasketService : IBasketService oluştur ve AddItemToBasketAsync metodunu yaz burada kullan, geriye dönen Basket nesnesini BasketViewModel'a dönüştür ve geriye döndür.
+            return BasketToViewModel(basket);
+        }
 
-            return null;
+        private BasketViewModel BasketToViewModel(Basket basket)
+        {
+            return new BasketViewModel()
+            {
+                Id = basket.Id,
+                BuyerId = basket.BuyerId,
+                Items = basket.Items.Select(x => new BasketItemViewModel()
+                {
+                    Id = x.Id,
+                    ProductId = x.ProductId,
+                    Quantity = x.Quantity,
+                    ProductName = x.Product.Name,
+                    PictureUri = x.Product.PictureUri,
+                    UnitPrice = x.Product.Price
+                }).ToList()
+            };
         }
 
         public async Task<Basket> GetOrCreateBasketAsync()
