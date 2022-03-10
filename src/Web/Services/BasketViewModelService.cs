@@ -3,6 +3,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -42,6 +43,14 @@ namespace Web.Services
         {
             var basket = await GetOrCreateBasketAsync();
             basket = await _basketService.AddItemToBasketAsync(basket.Id, productId, quantity);
+
+            return BasketToViewModel(basket);
+        }
+
+        public async Task<BasketViewModel> UpdateBasketAsync(Dictionary<int, int> quantities)
+        {
+            var basket = await GetOrCreateBasketAsync();
+            basket = await _basketService.SetQuantitiesAsync(basket.Id, quantities);
 
             return BasketToViewModel(basket);
         }

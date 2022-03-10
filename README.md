@@ -42,3 +42,6 @@ Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 5.0.14
 * https://gist.github.com/yigith/c6f999788b833dc3d22ac6332a053dd1
 * https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-context?view=aspnetcore-5.0
 * https://docs.microsoft.com/en-us/ef/core/querying/related-data/eager
+* https://docs.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-5.0#dictionaries-1
+* https://github.com/dotnet/aspnetcore/issues/16663
+* https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.modelbinderattribute.name?view=aspnetcore-5.0
