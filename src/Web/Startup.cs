@@ -17,6 +17,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Interfaces;
+using Web.Middlewares;
 using Web.Services;
 
 namespace Web
@@ -81,19 +82,7 @@ namespace Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.Use(async (context, next) =>
-            {
-                if (context.User.Identity.IsAuthenticated && context.Request.Cookies.ContainsKey(Constants.BASKET_COOKIENAME))
-                {
-                    var basketService = context.RequestServices.GetRequiredService<IBasketService>();
-                    var anonId = context.Request.Cookies[Constants.BASKET_COOKIENAME];
-                    var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    await basketService.TransferBasketAsync(anonId, userId);
-                    context.Response.Cookies.Delete(Constants.BASKET_COOKIENAME);
-                }
-
-                await next();
-            });
+            app.UseBasketTransfer();
 
             app.UseEndpoints(endpoints =>
             {
