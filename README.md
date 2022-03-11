@@ -45,3 +45,4 @@ Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 5.0.14
 * https://docs.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-5.0#dictionaries-1
 * https://github.com/dotnet/aspnetcore/issues/16663
 * https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.modelbinderattribute.name?view=aspnetcore-5.0
+* https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write?view=aspnetcore-5.0
