@@ -18,5 +18,7 @@ namespace Web.Interfaces
         Task<Basket> GetOrCreateBasketAsync();
 
         Task<string> GetOrCreateBuyerIdAsync();
+
+        Task<OrderCompleteViewModel> CompleteCheckoutAsync(Address shippingAddress);
     }
 }

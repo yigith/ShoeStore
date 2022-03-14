@@ -17,12 +17,14 @@ namespace Web.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepository<Basket> _basketRepo;
         private readonly IBasketService _basketService;
+        private readonly IOrderService _orderService;
 
-        public BasketViewModelService(IHttpContextAccessor httpContextAccessor, IRepository<Basket> basketRepo, IBasketService basketService)
+        public BasketViewModelService(IHttpContextAccessor httpContextAccessor, IRepository<Basket> basketRepo, IBasketService basketService, IOrderService orderService)
         {
             _httpContextAccessor = httpContextAccessor;
             _basketRepo = basketRepo;
             _basketService = basketService;
+            _orderService = orderService;
         }
 
         public async Task<BasketViewModel> GetBasketViewModelAsync()
@@ -116,6 +118,17 @@ namespace Web.Services
                 return null;
 
             return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier); ;
+        }
+
+        public async Task<OrderCompleteViewModel> CompleteCheckoutAsync(Address shippingAdress)
+        {
+            var basket = await GetOrCreateBasketAsync();
+
+            Order order = await _orderService.CreateOrderAsync(basket.Id, shippingAdress);
+
+            await _basketService.DeleteBasketAsync(basket.Id);
+
+            return new OrderCompleteViewModel() { OrderId = order.Id };
         }
     }
 }

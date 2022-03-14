@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -64,9 +65,24 @@ namespace Web.Controllers
         }
 
         [Authorize, HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(string gecici)
+        public async Task<IActionResult> Checkout(CheckoutViewModel vm)
         {
+            if (ModelState.IsValid)
+            {
+                // payment recevied..
+
+                var address = new Address(vm.Street, vm.City, vm.State, vm.ZipCode, vm.Country);
+                var result = await _basketViewModelService.CompleteCheckoutAsync(address);
+
+                return RedirectToAction("OrderComplete", result);
+            }
+
             return View();
+        }
+
+        public async Task<IActionResult> OrderComplete(OrderCompleteViewModel vm)
+        {
+            return View(vm);
         }
     }
 }
