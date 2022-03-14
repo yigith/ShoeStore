@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -54,6 +55,18 @@ namespace Web.Controllers
             await _basketService.DeleteBasketItemAsync(basket.Id, basketItemId);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Checkout()
+        {
+            return View();
+        }
+
+        [Authorize, HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Checkout(string gecici)
+        {
+            return View();
         }
     }
 }
