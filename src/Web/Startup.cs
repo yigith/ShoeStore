@@ -14,8 +14,10 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Interfaces;
+using Web.Middlewares;
 using Web.Services;
 
 namespace Web
@@ -79,6 +81,8 @@ namespace Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseBasketTransfer();
 
             app.UseEndpoints(endpoints =>
             {

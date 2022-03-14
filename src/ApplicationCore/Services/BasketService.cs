@@ -86,5 +86,33 @@ namespace ApplicationCore.Services
 
             return basket;
         }
+
+        public async Task TransferBasketAsync(string anonymousId, string userId)
+        {
+            var specAnon = new BasketWithItemsSpecification(anonymousId);
+            var anonBasket = await _basketRepo.FirstOrDefaultAsync(specAnon);
+            if (anonBasket == null) return;
+
+            var specUser = new BasketWithItemsSpecification(userId);
+            var userBasket = await _basketRepo.FirstOrDefaultAsync(specUser);
+
+            if (userBasket == null)
+            {
+                userBasket = new Basket() { BuyerId = userId };
+                await _basketRepo.AddAsync(userBasket);
+            }
+
+            foreach (BasketItem item in anonBasket.Items)
+            {
+                BasketItem targetItem = userBasket.Items.FirstOrDefault(x => x.ProductId == item.ProductId);
+                if (targetItem != null)
+                    targetItem.Quantity += item.Quantity;
+                else
+                    userBasket.Items.Add(new BasketItem() { ProductId = item.ProductId, Quantity = item.Quantity });
+            }
+
+            await _basketRepo.UpdateAsync(userBasket);
+            await _basketRepo.DeleteAsync(anonBasket);
+        }
     }
 }

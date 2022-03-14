@@ -16,5 +16,12 @@ namespace ApplicationCore.Specifications
                 .Include(x => x.Items)
                 .ThenInclude(x => x.Product);
         }
+
+        public BasketWithItemsSpecification(string buyerId)
+        {
+            Query.Where(x => x.BuyerId == buyerId)
+                .Include(x => x.Items)
+                .ThenInclude(x => x.Product);
+        }
     }
 }
