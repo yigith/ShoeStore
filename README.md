@@ -30,6 +30,9 @@ Install-Package Microsoft.EntityFrameworkCore -v 5.0.14
 Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 5.0.10
 Install-Package Ardalis.Specification.EntityFrameworkCore -v 5.2.0
 Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 5.0.14
+
+/UnitTests
+Install-Package Moq
 ```
 
 ### Resources
